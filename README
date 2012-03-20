@@ -1,0 +1,21 @@
+The continuos download plugin will download the viewing are when you are zooming and paning around. It will try to find
+the optimal boxes to download and send multiple download queries if possible. This plugin can be deactivated with a
+menu option. If you have mirrored download plugin installed this will not be used to download areas, this may cause you
+to be blocked from the main api.
+
+Prefereces:
+plugin.continuos_download.active_default  If this plugin is active at startup. This default state will not change when
+                                          you are toggeling the plugin with the menu option.
+plugin.continuos_download.max_threads     Maximum number of threads used for downloading, increasing this will cause the
+                                          client to send more concurrint queries to the server. Requires restart.
+plugin.continuos_download.max_areas       Maximum number of areas to download for each pan/zoom.
+plugin.continuos_download.wait_time       Time in milliseconds after a pan/zoom before it starts downloading. Additional
+                                          changes in the viewport in the waiting time will reset the timer.
+plugin.continuos_download.extra_download  How much extra area around the viewport is it going to download. Setting this
+                                          to 0 will not download any extra data.
+plugin.continuos_download.max_area        Max area to download in degrees^2. Increasing this number will cause the
+                                          plugin to download areas when you are zoomed far out.
+plugin.continuos_download.strategy        The strategy for finding what areas to request from the server.
+
+License:
+All files in this plugin is licenced under GPL v2 or later unless stated.
