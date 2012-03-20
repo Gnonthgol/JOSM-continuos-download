@@ -55,6 +55,8 @@ public class DownloadPlugin extends Plugin implements ZoomChangeListener {
 
     @Override
     public void zoomChanged() {
+        if (Main.map == null)
+            return;
         MapView mv = Main.map.mapView;
         Bounds bbox = mv.getLatLonBounds(mv.getBounds());
 
