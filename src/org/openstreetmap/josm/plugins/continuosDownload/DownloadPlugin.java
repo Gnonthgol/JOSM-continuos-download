@@ -118,7 +118,7 @@ public class DownloadPlugin extends Plugin implements ZoomChangeListener {
     private class ToggleAction extends JosmAction {
 
         public ToggleAction() {
-            super(tr("Download OSM data continuosly"), "images/countinous-download",
+            super(tr("Download OSM data continuosly"), "images/continous-download",
                     tr("Download map data continuosly when paning and zooming."), Shortcut.registerShortcut(
                             "continuosdownload:activate", tr("Toggle the continuos download on/off"), KeyEvent.VK_D,
                             Shortcut.ALT_SHIFT), true, "continuosdownload/activate", true);
