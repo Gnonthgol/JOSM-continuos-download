@@ -8,7 +8,7 @@ plugin.continuos_download.active_default  If this plugin is active at startup. T
                                           you are toggeling the plugin with the menu option.
 plugin.continuos_download.max_threads     Maximum number of threads used for downloading, increasing this will cause the
                                           client to send more concurrint queries to the server. Requires restart.
-plugin.continuos_download.max_areas       Maximum number of areas to download for each pan/zoom.
+plugin.continuos_download.max_areas       Maximum number of boxes to download for each pan/zoom.
 plugin.continuos_download.wait_time       Time in milliseconds after a pan/zoom before it starts downloading. Additional
                                           changes in the viewport in the waiting time will reset the timer.
 plugin.continuos_download.extra_download  How much extra area around the viewport is it going to download. Setting this

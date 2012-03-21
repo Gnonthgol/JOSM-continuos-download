@@ -4,7 +4,9 @@ import static org.openstreetmap.josm.tools.I18n.tr;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.ExecutorService;
@@ -20,6 +22,7 @@ import org.openstreetmap.josm.gui.MainMenu;
 import org.openstreetmap.josm.gui.MapView;
 import org.openstreetmap.josm.gui.NavigatableComponent;
 import org.openstreetmap.josm.gui.NavigatableComponent.ZoomChangeListener;
+import org.openstreetmap.josm.gui.preferences.PreferenceSetting;
 import org.openstreetmap.josm.plugins.Plugin;
 import org.openstreetmap.josm.plugins.PluginInformation;
 import org.openstreetmap.josm.tools.Shortcut;
@@ -29,7 +32,7 @@ public class DownloadPlugin extends Plugin implements ZoomChangeListener {
     public static ExecutorService worker; // The worker that runs all our
                                           // downloads, it have more threads
                                           // than Main.worker
-    private HashMap<String, DownloadStrategy> strats;
+    private static HashMap<String, DownloadStrategy> strats;
     private Timer timer;
     private TimerTask task;
     private Bounds lastBbox = null;
@@ -51,6 +54,11 @@ public class DownloadPlugin extends Plugin implements ZoomChangeListener {
         NavigatableComponent.addZoomChangeListener(this);
 
         MainMenu.add(Main.main.menu.fileMenu, new ToggleAction());
+    }
+
+    @Override
+    public PreferenceSetting getPreferenceSetting() {
+        return new DownloadPreference();
     }
 
     @Override
@@ -132,6 +140,10 @@ public class DownloadPlugin extends Plugin implements ZoomChangeListener {
             zoomChanged(); // Trigger a new download
         }
 
+    }
+
+    public static List<String> getStrategies() {
+        return new ArrayList<String>(strats.keySet());
     }
 
 }

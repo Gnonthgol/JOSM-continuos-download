@@ -122,8 +122,8 @@
         <xmlproperty file="REVISION" prefix="version" keepRoot="false" collapseAttributes="true"/>
         <delete file="REVISION"/>
         -->
-		<property name="version.entry.commit.revision" value="27970"/>
-		<property name="version.entry.commit.date" value="2012-03-01T20:43:36.326536Z"/>
+		<property name="version.entry.commit.revision" value="28134"/>
+		<property name="version.entry.commit.date" value="2012-03-21T02:21:36.326536Z"/>
     </target>
     <!--
     **********************************************************
