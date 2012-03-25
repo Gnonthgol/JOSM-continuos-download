@@ -8,14 +8,26 @@ import java.util.concurrent.Future;
 import org.openstreetmap.josm.Main;
 import org.openstreetmap.josm.actions.downloadtasks.PostDownloadHandler;
 import org.openstreetmap.josm.data.Bounds;
+import org.openstreetmap.josm.data.coor.LatLon;
 import org.openstreetmap.josm.data.osm.DataSource;
 
 public abstract class DownloadStrategy {
 
     public void fetch(Bounds bbox) {
-        Collection<Bounds> toFetch = getBoxes(bbox, Main.pref.getInteger("plugin.continuos_download.max_areas", 4));
+        Bounds extendedBox = extend(bbox, Main.pref.getDouble("plugin.continuos_download.extra_download", 0.1));
+        Collection<Bounds> toFetch = getBoxes(extendedBox,
+                Main.pref.getInteger("plugin.continuos_download.max_areas", 4));
 
-        printDebug(bbox, toFetch);
+        printDebug(extendedBox, toFetch);
+
+        // Try to avoid downloading areas outside the view area unnecessary
+        Collection<Bounds> t = toFetch;
+        toFetch = new ArrayList<Bounds>(t.size());
+        for (Bounds box : t) {
+            if (box.intersects(bbox)) {
+                toFetch.add(box);
+            }
+        }
 
         download(toFetch);
     }
@@ -78,6 +90,16 @@ public abstract class DownloadStrategy {
             Future<?> future = task.download(false, bbox, null);
             DownloadPlugin.worker.execute(new PostDownloadHandler(task, future));
         }
+    }
+
+    static protected Bounds extend(Bounds bbox, double amount) {
+        LatLon min = bbox.getMin();
+        LatLon max = bbox.getMax();
+
+        double dLat = Math.abs(max.lat() - min.lat()) * amount;
+        double dLon = Math.abs(max.lon() - min.lon()) * amount;
+
+        return new Bounds(min.lat() - dLat, min.lon() - dLon, max.lat() + dLat, max.lon() + dLon);
     }
 
 }

@@ -21,7 +21,6 @@ import javax.swing.JCheckBoxMenuItem;
 import org.openstreetmap.josm.Main;
 import org.openstreetmap.josm.actions.JosmAction;
 import org.openstreetmap.josm.data.Bounds;
-import org.openstreetmap.josm.data.coor.LatLon;
 import org.openstreetmap.josm.gui.MainMenu;
 import org.openstreetmap.josm.gui.MapView;
 import org.openstreetmap.josm.gui.NavigatableComponent;
@@ -115,21 +114,10 @@ public class DownloadPlugin extends Plugin implements ZoomChangeListener {
         public void run() {
             if (!active)
                 return;
-
-            LatLon min = bbox.getMin();
-            LatLon max = bbox.getMax();
-
-            // Extend the area to download beond the view
-            double t = Main.pref.getDouble("plugin.continuos_download.extra_download", 0.1);
-            double dLat = Math.abs(max.lat() - min.lat()) * t;
-            double dLon = Math.abs(max.lon() - min.lon()) * t;
-
-            Bounds newBbox = new Bounds(min.lat() - dLat, min.lon() - dLon,
-                    max.lat() + dLat, max.lon() + dLon);
             
             // Do not try to download an area if the user have zoomed far out
-            if (newBbox.getArea() < Main.pref.getDouble("plugin.continuos_download.max_area", 0.25))
-                getStrat().fetch(newBbox);
+            if (bbox.getArea() < Main.pref.getDouble("plugin.continuos_download.max_area", 0.25))
+                getStrat().fetch(bbox);
         }
     }
 
