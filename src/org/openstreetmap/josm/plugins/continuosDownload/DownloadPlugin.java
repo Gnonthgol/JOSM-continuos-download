@@ -5,6 +5,7 @@ import static org.openstreetmap.josm.tools.I18n.tr;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Timer;
@@ -13,6 +14,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+
+import javax.swing.ButtonModel;
+import javax.swing.JCheckBoxMenuItem;
 
 import org.openstreetmap.josm.Main;
 import org.openstreetmap.josm.actions.JosmAction;
@@ -53,7 +57,11 @@ public class DownloadPlugin extends Plugin implements ZoomChangeListener {
         timer = new Timer();
         NavigatableComponent.addZoomChangeListener(this);
 
-        MainMenu.add(Main.main.menu.fileMenu, new ToggleAction());
+        ToggleAction toggle = new ToggleAction();
+        JCheckBoxMenuItem menuItem = MainMenu.addWithCheckbox(Main.main.menu.fileMenu, toggle,
+                MainMenu.WINDOW_MENU_GROUP.ALWAYS);
+        menuItem.setState(active);
+        toggle.addButtonModel(menuItem.getModel());
     }
 
     @Override
@@ -127,17 +135,41 @@ public class DownloadPlugin extends Plugin implements ZoomChangeListener {
 
     private class ToggleAction extends JosmAction {
 
+        private Collection<ButtonModel> buttonModels;
+
         public ToggleAction() {
             super(tr("Download OSM data continuosly"), "images/continous-download",
                     tr("Download map data continuosly when paning and zooming."), Shortcut.registerShortcut(
                             "continuosdownload:activate", tr("Toggle the continuos download on/off"), KeyEvent.VK_D,
                             Shortcut.ALT_SHIFT), true, "continuosdownload/activate", true);
+            buttonModels = new ArrayList<ButtonModel>();
         }
 
         @Override
         public void actionPerformed(ActionEvent e) {
             active = !active;
+            notifySelectedState();
             zoomChanged(); // Trigger a new download
+        }
+
+        public void addButtonModel(ButtonModel model) {
+            if (model != null && !buttonModels.contains(model)) {
+                buttonModels.add(model);
+            }
+        }
+
+        public void removeButtonModel(ButtonModel model) {
+            if (model != null && buttonModels.contains(model)) {
+                buttonModels.remove(model);
+            }
+        }
+
+        protected void notifySelectedState() {
+            for (ButtonModel model : buttonModels) {
+                if (model.isSelected() != active) {
+                    model.setSelected(active);
+                }
+            }
         }
 
     }
