@@ -78,7 +78,7 @@ public class DownloadPreference extends DefaultTabPreferenceSetting {
         for (String strat : DownloadPlugin.getStrategies()) {
             strategy.addItem(strat);
         }
-        strategy.setSelectedItem(Main.pref.get("plugin.continuos_download.strategy", "SimpleStrategy"));
+        strategy.setSelectedItem(Main.pref.get("plugin.continuos_download.strategy", "BoxStrategy"));
         strategy.setToolTipText(tr("The strategy for finding what areas to request from the server."));
         panel.add(new JLabel(tr("Download strategy")), GBC.std());
         panel.add(strategy, GBC.eol().fill(GBC.HORIZONTAL).insets(5, 0, 0, 5));
