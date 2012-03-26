@@ -31,7 +31,7 @@
     <!-- enter the SVN commit message -->
     <property name="commit.message" value="Commit message"/>
     <!-- enter the *lowest* JOSM version this plugin is currently compatible with -->
-    <property name="plugin.main.version" value="5026"/>
+    <property name="plugin.main.version" value="5047"/>
     <!-- should not be necessary to change the following properties -->
     <property name="josm" location="../../core/dist/josm-custom.jar"/>
     <property name="plugin.build.dir" value="build"/>
@@ -98,7 +98,7 @@
                 <attribute name="Plugin-Date" value="${version.entry.commit.date}"/>
                 <attribute name="Plugin-Description" value="Downloads new data when you pan/zoom"/>
                 <attribute name="Plugin-Icon" value="images/continous-download.png"/>
-                <attribute name="Plugin-Link" value="..."/>
+                <attribute name="Plugin-Link" value="http://wiki.openstreetmap.org/wiki/JOSM/Plugins/continuosDownload"/>
                 <attribute name="Plugin-Mainversion" value="${plugin.main.version}"/>
                 <attribute name="Plugin-Version" value="${version.entry.commit.revision}"/>
             </manifest>
@@ -122,8 +122,8 @@
         <xmlproperty file="REVISION" prefix="version" keepRoot="false" collapseAttributes="true"/>
         <delete file="REVISION"/>
         -->
-		<property name="version.entry.commit.revision" value="28134"/>
-		<property name="version.entry.commit.date" value="2012-03-21T02:21:36.326536Z"/>
+		<property name="version.entry.commit.revision" value="28151"/>
+		<property name="version.entry.commit.date" value="2012-03-26T21:11:36.326536Z"/>
     </target>
     <!--
     **********************************************************

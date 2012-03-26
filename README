@@ -17,5 +17,10 @@ plugin.continuos_download.max_area        Max area to download in degrees^2. Inc
                                           plugin to download areas when you are zoomed far out.
 plugin.continuos_download.strategy        The strategy for finding what areas to request from the server.
 
+Download strategies:
+Box strategy     Original code developed by zere for use in Potlatch 2. This strategy looks for the best way to combine
+                 areas to be downloaded so that the area is as smal as possible.
+Simple strategy  This is a test strategy that will download the entire area. Mostly used for testing. 
+
 License:
 All files in this plugin is licenced under GPL v2 or later unless stated.
