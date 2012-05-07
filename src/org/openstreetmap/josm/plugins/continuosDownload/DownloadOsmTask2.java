@@ -1,5 +1,7 @@
 package org.openstreetmap.josm.plugins.continuosDownload;
 
+import static org.openstreetmap.josm.tools.I18n.tr;
+
 import java.util.concurrent.Future;
 
 import org.openstreetmap.josm.Main;
@@ -27,6 +29,14 @@ public class DownloadOsmTask2 extends DownloadOsmTask {
         // message if necessary. If no one calls getErrorMessage() it just
         // behaves like execute.
         return Main.worker.submit(downloadTask);
+    }
+
+    @Override
+    protected void rememberErrorMessage(String message) {
+        // XXX: Remove error message that is not really an error to prevent ugly
+        // popups
+        if (!message.equals(tr("No data found in this area.")))
+            super.rememberErrorMessage(message);
     }
 
     protected class DownloadTask2 extends DownloadTask {

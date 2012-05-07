@@ -1,5 +1,4 @@
 TODO:
  - Add more strategies
  - Do not show progress bar in a modal window
- - Do not popup a dialog when downloading an empty area
  - Play nice with the mirrored download plugin
