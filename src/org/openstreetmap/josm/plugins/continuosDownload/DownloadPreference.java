@@ -29,6 +29,7 @@ public class DownloadPreference extends DefaultTabPreferenceSetting {
     private JTextField extraDownload = new JTextField(4);
     private JTextField maxArea = new JTextField(4);
     private JComboBox strategy = new JComboBox();
+    private JCheckBox quietDownload = new JCheckBox(tr("Supress the default modal progress monitor when downloading."));
 
     @Override
     public void addGui(PreferenceTabbedPane gui) {
@@ -83,6 +84,13 @@ public class DownloadPreference extends DefaultTabPreferenceSetting {
         panel.add(new JLabel(tr("Download strategy")), GBC.std());
         panel.add(strategy, GBC.eol().fill(GBC.HORIZONTAL).insets(5, 0, 0, 5));
 
+        // quietDownload
+        quietDownload.setSelected(Main.pref.getBoolean("plugin.continuos_download.quiet_download", false));
+        quietDownload.setToolTipText(tr("If we should supress the progress monitor that is shown when downloading. If"
+                + " select this option there is no indication that something is being done, and no way to"
+                + " cancel the download."));
+        panel.add(quietDownload, GBC.eol().insets(0, 0, 0, 0));
+
         panel.add(Box.createVerticalGlue(), GBC.eol().fill(GBC.VERTICAL));
         createPreferenceTabWithScrollPane(gui, panel);
     }
@@ -98,6 +106,7 @@ public class DownloadPreference extends DefaultTabPreferenceSetting {
         Main.pref.put("plugin.continuos_download.extra_download", extraDownload.getText());
         Main.pref.put("plugin.continuos_download.max_area", maxArea.getText());
         Main.pref.put("plugin.continuos_download.strategy", (String) strategy.getSelectedItem());
+        Main.pref.put("plugin.continuos_download.quiet_download", quietDownload.isSelected());
         return r;
     }
 }

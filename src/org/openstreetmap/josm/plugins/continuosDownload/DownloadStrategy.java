@@ -10,6 +10,8 @@ import org.openstreetmap.josm.actions.downloadtasks.PostDownloadHandler;
 import org.openstreetmap.josm.data.Bounds;
 import org.openstreetmap.josm.data.coor.LatLon;
 import org.openstreetmap.josm.data.osm.DataSource;
+import org.openstreetmap.josm.gui.progress.NullProgressMonitor;
+import org.openstreetmap.josm.gui.progress.ProgressMonitor;
 
 public abstract class DownloadStrategy {
 
@@ -87,7 +89,13 @@ public abstract class DownloadStrategy {
     protected void download(Collection<Bounds> bboxes) {
         for (Bounds bbox : bboxes) {
             DownloadOsmTask2 task = new DownloadOsmTask2();
-            Future<?> future = task.download(false, bbox, null);
+            
+            ProgressMonitor monitor = null;
+            if (Main.pref.getBoolean("plugin.continuos_download.quiet_download", false)) {
+                monitor = NullProgressMonitor.INSTANCE;
+            }
+
+            Future<?> future = task.download(false, bbox, monitor);
             DownloadPlugin.worker.execute(new PostDownloadHandler(task, future));
         }
     }
