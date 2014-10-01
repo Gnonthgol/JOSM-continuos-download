@@ -4,12 +4,10 @@ import static org.openstreetmap.josm.tools.I18n.tr;
 
 import java.util.concurrent.Future;
 
-import org.openstreetmap.josm.Main;
 import org.openstreetmap.josm.actions.downloadtasks.DownloadOsmTask;
 import org.openstreetmap.josm.data.Bounds;
 import org.openstreetmap.josm.data.osm.visitor.BoundingXYVisitor;
 import org.openstreetmap.josm.gui.progress.ProgressMonitor;
-import org.openstreetmap.josm.io.BoundingBoxDownloader;
 import org.openstreetmap.josm.io.OsmServerReader;
 
 /*
@@ -18,17 +16,10 @@ import org.openstreetmap.josm.io.OsmServerReader;
  */
 public class DownloadOsmTask2 extends DownloadOsmTask {
 
-    public Future<?> download(boolean newLayer, Bounds downloadArea,
+    @Override
+    public Future<?> download(OsmServerReader reader, boolean newLayer, Bounds downloadArea,
             ProgressMonitor progressMonitor) {
-
-        downloadTask = new DownloadTask2(newLayer, new BoundingBoxDownloader(
-                downloadArea), progressMonitor);
-        currentBounds = new Bounds(downloadArea);
-        // We need submit instead of execute so we can wait for it to finish and
-        // get the error
-        // message if necessary. If no one calls getErrorMessage() it just
-        // behaves like execute.
-        return Main.worker.submit(downloadTask);
+        return download(new DownloadTask2(newLayer, reader, progressMonitor), downloadArea);
     }
 
     @Override
