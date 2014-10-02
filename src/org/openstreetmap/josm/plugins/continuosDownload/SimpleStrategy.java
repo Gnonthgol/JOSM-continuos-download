@@ -11,7 +11,7 @@ import org.openstreetmap.josm.data.Bounds;
 public class SimpleStrategy extends DownloadStrategy {
 
     @Override
-    public Collection<Bounds> getBoxes(Bounds bbox, int maxBoxes) {
+    public Collection<Bounds> getBoxes(Bounds bbox, Collection<Bounds> present, int maxBoxes) {
         return Collections.singleton(bbox);
     }
 

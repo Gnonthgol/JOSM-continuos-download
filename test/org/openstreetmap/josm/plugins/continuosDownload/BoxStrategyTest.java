@@ -30,9 +30,9 @@ public class BoxStrategyTest {
         Collection<Bounds> existing = new ArrayList<Bounds>();
         existing.add(new Bounds(0, 0, 1, 1));
 
-        BoxStrategy strat = new Scaffold(existing);
+        BoxStrategy strat = new BoxStrategy();
 
-        Collection<Bounds> r = strat.getBoxes(new Bounds(0, -1, 1, 2), 3);
+        Collection<Bounds> r = strat.getBoxes(new Bounds(0, -1, 1, 2), existing, 3);
 
         assertEquals(2, r.size());
         for (Bounds b : r) {
@@ -56,19 +56,6 @@ public class BoxStrategyTest {
         Collection<Box> r = BoxStrategy.optimalPart(4, set);
 
         assertTrue(System.currentTimeMillis() < t0 + 2000);
-    }
-
-    static class Scaffold extends BoxStrategy {
-        Collection<Bounds> existing;
-
-        Scaffold(Collection<Bounds> e) {
-            existing = e;
-        }
-
-        @Override
-        protected Collection<Bounds> getExisting() {
-            return existing;
-        }
     }
 
 }

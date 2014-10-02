@@ -6,18 +6,27 @@ import java.util.Collections;
 import java.util.concurrent.Future;
 
 import org.openstreetmap.josm.Main;
+import org.openstreetmap.josm.actions.downloadtasks.AbstractDownloadTask;
+import org.openstreetmap.josm.actions.downloadtasks.DownloadGpsTask;
 import org.openstreetmap.josm.actions.downloadtasks.PostDownloadHandler;
 import org.openstreetmap.josm.data.Bounds;
-import org.openstreetmap.josm.data.DataSource;
 import org.openstreetmap.josm.data.coor.LatLon;
+import org.openstreetmap.josm.gui.layer.GpxLayer;
+import org.openstreetmap.josm.gui.layer.Layer;
+import org.openstreetmap.josm.gui.layer.OsmDataLayer;
 import org.openstreetmap.josm.gui.progress.NullProgressMonitor;
 import org.openstreetmap.josm.gui.progress.ProgressMonitor;
 
 public abstract class DownloadStrategy {
 
     public void fetch(Bounds bbox) {
+        this.fetch(bbox, OsmDataLayer.class);
+        this.fetch(bbox, GpxLayer.class);
+    }
+
+    public void fetch(Bounds bbox, Class<?> klass) {
         Bounds extendedBox = extend(bbox, Main.pref.getDouble("plugin.continuos_download.extra_download", 0.1));
-        Collection<Bounds> toFetch = getBoxes(extendedBox,
+        Collection<Bounds> toFetch = getBoxes(extendedBox, getExisting(klass),
                 Main.pref.getInteger("plugin.continuos_download.max_areas", 4));
 
         printDebug(extendedBox, toFetch);
@@ -31,7 +40,7 @@ public abstract class DownloadStrategy {
             }
         }
 
-        download(toFetch);
+        download(toFetch, klass);
     }
 
     private void printDebug(Bounds bbox, Collection<Bounds> toFetch) {
@@ -41,7 +50,7 @@ public abstract class DownloadStrategy {
         }
 
         double areaDownloaded = 0;
-        for (Bounds box : getExisting()) {
+        for (Bounds box : getExisting(OsmDataLayer.class)) {
             if (box.intersects(bbox))
                 areaDownloaded += intersection(box, bbox).getArea();
         }
@@ -72,23 +81,41 @@ public abstract class DownloadStrategy {
         return new Bounds(minY, minX, maxY, maxX);
     }
 
-    protected Collection<Bounds> getExisting() {
-        if (Main.map.mapView.getEditLayer() == null)
-            return Collections.emptySet();
-        ArrayList<Bounds> r = new ArrayList<Bounds>();
-
-        for (DataSource dataSource : Main.map.mapView.getEditLayer().data.dataSources) {
-            r.add(dataSource.bounds);
+    private Collection<Bounds> getExisting(Class<?> klass) {
+        if (klass.isAssignableFrom(OsmDataLayer.class)) {
+            OsmDataLayer layer = Main.map.mapView.getEditLayer();
+            if (layer == null) {
+                Collection<Layer> layers = Main.map.mapView.getAllLayersAsList();
+                for (Layer layer1 : layers) {
+                    if (layer1 instanceof OsmDataLayer)
+                        return ((OsmDataLayer) layer1).data.getDataSourceBounds();
+                }
+                return Collections.emptyList();
+            } else {
+                return layer.data.getDataSourceBounds();
+            }
+        } else if (klass.isAssignableFrom(GpxLayer.class)) {
+            if (!Main.isDisplayingMapView())
+                return null;
+            boolean merge = Main.pref.getBoolean("download.gps.mergeWithLocal", false);
+            Layer active = Main.map.mapView.getActiveLayer();
+            if (active instanceof GpxLayer && (merge || ((GpxLayer) active).data.fromServer))
+                return ((GpxLayer) active).data.getDataSourceBounds();
+            for (GpxLayer l : Main.map.mapView.getLayersOfType(GpxLayer.class)) {
+                if (merge || l.data.fromServer)
+                    return l.data.getDataSourceBounds();
+            }
+            return Collections.emptyList();
+        } else {
+            throw new IllegalArgumentException();
         }
-
-        return r;
     }
 
-    public abstract Collection<Bounds> getBoxes(Bounds bbox, int maxAreas);
+    public abstract Collection<Bounds> getBoxes(Bounds bbox, Collection<Bounds> present, int maxAreas);
 
-    protected void download(Collection<Bounds> bboxes) {
+    private void download(Collection<Bounds> bboxes, Class<?> klass) {
         for (Bounds bbox : bboxes) {
-            DownloadOsmTask2 task = new DownloadOsmTask2();
+            AbstractDownloadTask task = getDownloadTask(klass);
             
             ProgressMonitor monitor = null;
             if (Main.pref.getBoolean("plugin.continuos_download.quiet_download", false)) {
@@ -98,6 +125,14 @@ public abstract class DownloadStrategy {
             Future<?> future = task.download(false, bbox, monitor);
             DownloadPlugin.worker.execute(new PostDownloadHandler(task, future));
         }
+    }
+
+    private AbstractDownloadTask getDownloadTask(Class<?> klass) {
+        if (klass.isAssignableFrom(OsmDataLayer.class))
+            return new DownloadOsmTask2();
+        if (klass.isAssignableFrom(GpxLayer.class))
+            return new DownloadGpsTask();
+        throw new IllegalArgumentException();
     }
 
     static protected Bounds extend(Bounds bbox, double amount) {

@@ -12,8 +12,8 @@ import org.openstreetmap.josm.data.coor.LatLon;
 public class BoxStrategy extends DownloadStrategy {
 
     @Override
-    public Collection<Bounds> getBoxes(Bounds bbox, int maxBoxes) {
-        Collection<Box> existing = Box.merge(fromBounds(getExisting()));
+    public Collection<Bounds> getBoxes(Bounds bbox, Collection<Bounds> present, int maxBoxes) {
+        Collection<Box> existing = Box.merge(fromBounds(present));
         Collection<Box> bits = Box.merge(fromBounds(bbox).subtract_all(existing));
         Collection<Box> toFetch = optimalPart(maxBoxes, bits);
         return toBounds(Box.merge(toFetch));
