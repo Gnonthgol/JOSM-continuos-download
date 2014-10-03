@@ -26,7 +26,10 @@ public abstract class DownloadStrategy {
 
     public void fetch(Bounds bbox, Class<?> klass) {
         Bounds extendedBox = extend(bbox, Main.pref.getDouble("plugin.continuos_download.extra_download", 0.1));
-        Collection<Bounds> toFetch = getBoxes(extendedBox, getExisting(klass),
+        Collection<Bounds> existing = getExisting(klass);
+        if (existing.size() == 0)
+            return;
+        Collection<Bounds> toFetch = getBoxes(extendedBox, existing,
                 Main.pref.getInteger("plugin.continuos_download.max_areas", 4));
 
         printDebug(extendedBox, toFetch);
