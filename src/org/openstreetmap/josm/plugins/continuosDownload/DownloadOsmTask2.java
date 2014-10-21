@@ -37,17 +37,14 @@ public class DownloadOsmTask2 extends DownloadOsmTask {
             super(newLayer, reader, progressMonitor);
         }
 
-        protected void computeBboxAndCenterScale() {
+        @Override
+        protected void computeBboxAndCenterScale(Bounds bounds) {
             BoundingXYVisitor v = new BoundingXYVisitor();
-            if (currentBounds != null) {
-                v.visit(currentBounds);
+            if (bounds != null) {
+                v.visit(bounds);
             } else {
                 v.computeBoundingBox(dataSet.getNodes());
             }
-
-            // Do not change the view as it will trigger another call to update
-            // the area and the user would not be able to work. Some say this is
-            // an improvement.
             // Main.map.mapView.recalculateCenterScale(v);
         }
     }
