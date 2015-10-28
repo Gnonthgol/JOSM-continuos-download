@@ -148,8 +148,8 @@ public class Box {
         return x.equals(other.x) && y.equals(other.y);
     }
 
-    /*
-     * returns the are of the box
+    /**
+     * returns the area of the box
      */
     public long size() {
         return x.size() * y.size();

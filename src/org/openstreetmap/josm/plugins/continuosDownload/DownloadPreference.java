@@ -19,10 +19,10 @@ import org.openstreetmap.josm.tools.GBC;
 public class DownloadPreference extends DefaultTabPreferenceSetting {
 
     public DownloadPreference() {
-        super("continous-download", tr("Download Settings"), tr("Settings for the continuos download."), true);
+        super("continuous-download", tr("Download Settings"), tr("Settings for the continuous download."), true);
     }
 
-    private JCheckBox activeDefault = new JCheckBox(tr("Activate continuos downloads at startup."));
+    private JCheckBox activeDefault = new JCheckBox(tr("Activate continuous downloads at startup."));
     private JTextField maxThreads = new JTextField(4);
     private JTextField maxAreas = new JTextField(4);
     private JTextField waitTime = new JTextField(6);
