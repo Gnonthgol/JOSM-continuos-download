@@ -82,7 +82,8 @@ public class BoxStrategy extends DownloadStrategy {
 
         // Create a new partition with an extra box in the ith place
         public Partition add(Box next, int i) {
-            ArrayList<Box> n = (ArrayList<Box>) box.clone();
+            @SuppressWarnings("unchecked")
+			ArrayList<Box> n = (ArrayList<Box>) box.clone();
             if (n.size() <= i) {
                 n.add(next);
             } else {

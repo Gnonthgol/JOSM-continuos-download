@@ -118,7 +118,7 @@ public abstract class DownloadStrategy {
 
     private void download(Collection<Bounds> bboxes, Class<?> klass) {
         for (Bounds bbox : bboxes) {
-            AbstractDownloadTask task = getDownloadTask(klass);
+            AbstractDownloadTask<?> task = getDownloadTask(klass);
             
             ProgressMonitor monitor = null;
             if (Main.pref.getBoolean("plugin.continuos_download.quiet_download", false)) {
@@ -130,7 +130,7 @@ public abstract class DownloadStrategy {
         }
     }
 
-    private AbstractDownloadTask getDownloadTask(Class<?> klass) {
+    private AbstractDownloadTask<?> getDownloadTask(Class<?> klass) {
         if (klass.isAssignableFrom(OsmDataLayer.class))
             return new DownloadOsmTask2();
         if (klass.isAssignableFrom(GpxLayer.class))

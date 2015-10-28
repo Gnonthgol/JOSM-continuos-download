@@ -146,12 +146,6 @@ public class DownloadPlugin extends Plugin implements ZoomChangeListener {
             }
         }
 
-        public void removeButtonModel(ButtonModel model) {
-            if (model != null && buttonModels.contains(model)) {
-                buttonModels.remove(model);
-            }
-        }
-
         protected void notifySelectedState() {
             for (ButtonModel model : buttonModels) {
                 if (model.isSelected() != active) {
@@ -159,11 +153,9 @@ public class DownloadPlugin extends Plugin implements ZoomChangeListener {
                 }
             }
         }
-
     }
 
     public static List<String> getStrategies() {
         return new ArrayList<String>(strats.keySet());
     }
-
 }

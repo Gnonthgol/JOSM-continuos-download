@@ -53,9 +53,8 @@ public class BoxStrategyTest {
         set.add(new Box(-10, -10, -9, -9));
 
         long t0 = System.currentTimeMillis();
-        Collection<Box> r = BoxStrategy.optimalPart(4, set);
+        /*Collection<Box> r =*/ BoxStrategy.optimalPart(4, set);
 
         assertTrue(System.currentTimeMillis() < t0 + 2000);
     }
-
 }

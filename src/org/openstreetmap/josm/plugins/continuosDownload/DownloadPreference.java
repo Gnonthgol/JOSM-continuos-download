@@ -28,7 +28,7 @@ public class DownloadPreference extends DefaultTabPreferenceSetting {
     private JTextField waitTime = new JTextField(6);
     private JTextField extraDownload = new JTextField(4);
     private JTextField maxArea = new JTextField(4);
-    private JComboBox strategy = new JComboBox();
+    private JComboBox<String> strategy = new JComboBox<>();
     private JCheckBox quietDownload = new JCheckBox(tr("Supress the default modal progress monitor when downloading."));
 
     @Override
