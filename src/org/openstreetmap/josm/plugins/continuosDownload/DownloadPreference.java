@@ -40,11 +40,11 @@ public class DownloadPreference extends DefaultTabPreferenceSetting {
         activeDefault.setToolTipText(tr("If this plugin is active at startup. This default state will not change when"
                 + " you are toggeling the plugin with the menu option."));
         panel.add(activeDefault, GBC.eol().insets(0, 0, 0, 0));
-        
+
         // maxThreads
         maxThreads.setText(Main.pref.get("plugin.continuos_download.max_threads", "2"));
         maxThreads.setToolTipText(tr("Maximum number of threads used for downloading, increasing this will cause the"
-                + " client to send more concurrint queries to the server. (Requires restart)"));
+                + " client to send more concurrent queries to the server.")+" "+tr("Requires restart"));
         panel.add(new JLabel(tr("Max threads")), GBC.std());
         panel.add(maxThreads, GBC.eol().fill(GBC.HORIZONTAL).insets(5, 0, 0, 5));
 
@@ -86,8 +86,8 @@ public class DownloadPreference extends DefaultTabPreferenceSetting {
 
         // quietDownload
         quietDownload.setSelected(Main.pref.getBoolean("plugin.continuos_download.quiet_download", false));
-        quietDownload.setToolTipText(tr("If we should supress the progress monitor that is shown when downloading. If"
-                + " select this option there is no indication that something is being done, and no way to"
+        quietDownload.setToolTipText(tr("Suppress the progress monitor that is shown when downloading. If"
+                + " this option is selected there is no indication that something is being done, and no way to"
                 + " cancel the download."));
         panel.add(quietDownload, GBC.eol().insets(0, 0, 0, 0));
 
