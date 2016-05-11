@@ -12,7 +12,7 @@
     <property name="plugin.author" value="Gnonthgol; JOSM developers"/>
     <property name="plugin.class" value="org.openstreetmap.josm.plugins.continuosDownload.DownloadPlugin"/>
     <property name="plugin.description" value="Downloads new data when you pan/zoom"/>
-    <property name="plugin.icon" value="images/continous-download.png"/>
+    <property name="plugin.icon" value="images/continuous-download.png"/>
     <property name="plugin.link" value="https://github.com/JOSM/JOSM-continuos-download"/>
     <!--<property name="plugin.early" value="..."/>-->
     <!--<property name="plugin.requires" value="..."/>-->
