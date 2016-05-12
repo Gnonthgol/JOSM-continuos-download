@@ -53,5 +53,4 @@ public class Interval {
             return false;
         return true;
     }
-
 }

@@ -6,7 +6,7 @@ import java.util.Collections;
 
 import org.openstreetmap.josm.data.Bounds;
 
-/*
+/**
  * A simple strategy for simple minds.
  */
 public class SimpleStrategy extends AbstractDownloadStrategy {
@@ -15,5 +15,4 @@ public class SimpleStrategy extends AbstractDownloadStrategy {
     public Collection<Bounds> getBoxes(Bounds bbox, Collection<Bounds> present, int maxBoxes) {
         return Collections.singleton(bbox);
     }
-
 }
