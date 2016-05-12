@@ -1,5 +1,5 @@
+// License: GPL. See LICENSE file for details.
 package org.openstreetmap.josm.plugins.continuosDownload;
-
 
 public class Interval {
     public long min, max;

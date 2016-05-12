@@ -1,3 +1,4 @@
+// License: GPL. See LICENSE file for details.
 package org.openstreetmap.josm.plugins.continuosDownload;
 
 import static org.openstreetmap.josm.tools.I18n.tr;
@@ -38,19 +39,23 @@ public class DownloadPlugin extends Plugin implements ZoomChangeListener {
     private static HashMap<String, DownloadStrategy> strats;
     private Timer timer;
     private TimerTask task;
-    private Bounds lastBbox = null;
+    private Bounds lastBbox;
     private boolean active;
 
+    /**
+     * Constructs a new {@code DownloadPlugin}.
+     * @param info plugin info
+     */
     public DownloadPlugin(PluginInformation info) {
         super(info);
 
         // Create a new executor to run our downloads in
-        int max_threads = Main.pref.getInteger("plugin.continuos_download.max_threads", 2);
-        worker = new ThreadPoolExecutor(1, max_threads, 1, TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>());
+        int maxThreads = Main.pref.getInteger("plugin.continuos_download.max_threads", 2);
+        worker = new ThreadPoolExecutor(1, maxThreads, 1, TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>());
         
         active = Main.pref.getBoolean("plugin.continuos_download.active_default", true);
 
-        strats = new HashMap<String, DownloadStrategy>();
+        strats = new HashMap<>();
         registerStrat(new SimpleStrategy());
         registerStrat(new BoxStrategy());
         timer = new Timer();
@@ -123,14 +128,14 @@ public class DownloadPlugin extends Plugin implements ZoomChangeListener {
 
     private class ToggleAction extends JosmAction {
 
-        private Collection<ButtonModel> buttonModels;
+        private transient Collection<ButtonModel> buttonModels;
 
         public ToggleAction() {
             super(tr("Download OSM data continuously"), "images/continuous-download",
                     tr("Download map data continuously when paning and zooming."), Shortcut.registerShortcut(
                             "continuosdownload:activate", tr("Toggle the continuous download on/off"), KeyEvent.VK_D,
                             Shortcut.ALT_SHIFT), true, "continuosdownload/activate", true);
-            buttonModels = new ArrayList<ButtonModel>();
+            buttonModels = new ArrayList<>();
         }
 
         @Override
@@ -156,6 +161,6 @@ public class DownloadPlugin extends Plugin implements ZoomChangeListener {
     }
 
     public static List<String> getStrategies() {
-        return new ArrayList<String>(strats.keySet());
+        return new ArrayList<>(strats.keySet());
     }
 }

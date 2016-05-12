@@ -1,3 +1,4 @@
+// License: GPL. See LICENSE file for details.
 package org.openstreetmap.josm.plugins.continuosDownload;
 
 import java.util.concurrent.Future;
@@ -13,11 +14,14 @@ import org.openstreetmap.josm.io.OsmServerReader;
  */
 public class DownloadOsmTask2 extends DownloadOsmTask {
 
+    /**
+     * Constructs a new {@code DownloadOsmTask2}.
+     */
     public DownloadOsmTask2() {
-    	warnAboutEmptyArea = false;
-	}
+        warnAboutEmptyArea = false;
+    }
 
-	@Override
+    @Override
     public Future<?> download(OsmServerReader reader, boolean newLayer, Bounds downloadArea,
             ProgressMonitor progressMonitor) {
         return download(new DownloadTask2(newLayer, reader, progressMonitor), downloadArea);
