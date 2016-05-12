@@ -121,11 +121,11 @@ public class Box {
          * numbers of boxes. there's almost certainly a better algorithm out
          * there to do the same thing in better time. but it's nice and simple.
          */
-        if (boxes.size() == 0)
-            return new ArrayList<Box>();
+        if (boxes.isEmpty())
+            return new ArrayList<>();
 
         Box first = null;
-        ArrayList<Box> kept = new ArrayList<Box>();
+        ArrayList<Box> kept = new ArrayList<>();
         for (Box box : boxes) {
             if (first == null) {
                 first = box;
@@ -158,7 +158,7 @@ public class Box {
 
     @Override
     public String toString() {
-        return ("Box[" + x.min + "," + y.min + "," + x.max + "," + y.max + "]");
+        return "Box[" + x.min + "," + y.min + "," + x.max + "," + y.max + "]";
     }
 
     @Override
@@ -182,5 +182,4 @@ public class Box {
             return false;
         return true;
     }
-
 }

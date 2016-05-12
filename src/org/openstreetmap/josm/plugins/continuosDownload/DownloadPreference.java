@@ -19,18 +19,21 @@ import org.openstreetmap.josm.tools.GBC;
 
 public class DownloadPreference extends DefaultTabPreferenceSetting {
 
+    private final JCheckBox activeDefault = new JCheckBox(tr("Activate continuous downloads at startup."));
+    private final JTextField maxThreads = new JTextField(4);
+    private final JTextField maxAreas = new JTextField(4);
+    private final JTextField waitTime = new JTextField(6);
+    private final JTextField extraDownload = new JTextField(4);
+    private final JTextField maxArea = new JTextField(4);
+    private final JComboBox<String> strategy = new JComboBox<>();
+    private final JCheckBox quietDownload = new JCheckBox(tr("Supress the default modal progress monitor when downloading."));
+
+    /**
+     * Constructs a new {@code DownloadPreference}.
+     */
     public DownloadPreference() {
         super("continuous-download", tr("Download Settings"), tr("Settings for the continuous download."), true);
     }
-
-    private JCheckBox activeDefault = new JCheckBox(tr("Activate continuous downloads at startup."));
-    private JTextField maxThreads = new JTextField(4);
-    private JTextField maxAreas = new JTextField(4);
-    private JTextField waitTime = new JTextField(6);
-    private JTextField extraDownload = new JTextField(4);
-    private JTextField maxArea = new JTextField(4);
-    private JComboBox<String> strategy = new JComboBox<>();
-    private JCheckBox quietDownload = new JCheckBox(tr("Supress the default modal progress monitor when downloading."));
 
     @Override
     public void addGui(PreferenceTabbedPane gui) {

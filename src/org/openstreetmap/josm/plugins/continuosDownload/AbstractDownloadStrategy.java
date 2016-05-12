@@ -18,7 +18,7 @@ import org.openstreetmap.josm.gui.layer.OsmDataLayer;
 import org.openstreetmap.josm.gui.progress.NullProgressMonitor;
 import org.openstreetmap.josm.gui.progress.ProgressMonitor;
 
-public abstract class DownloadStrategy {
+public abstract class AbstractDownloadStrategy {
 
     public void fetch(Bounds bbox) {
         this.fetch(bbox, OsmDataLayer.class);
@@ -28,7 +28,7 @@ public abstract class DownloadStrategy {
     public void fetch(Bounds bbox, Class<?> klass) {
         Bounds extendedBox = extend(bbox, Main.pref.getDouble("plugin.continuos_download.extra_download", 0.1));
         Collection<Bounds> existing = getExisting(klass);
-        if (existing.size() == 0)
+        if (existing.isEmpty())
             return;
         Collection<Bounds> toFetch = getBoxes(extendedBox, existing,
                 Main.pref.getInteger("plugin.continuos_download.max_areas", 4));
@@ -37,7 +37,7 @@ public abstract class DownloadStrategy {
 
         // Try to avoid downloading areas outside the view area unnecessary
         Collection<Bounds> t = toFetch;
-        toFetch = new ArrayList<Bounds>(t.size());
+        toFetch = new ArrayList<>(t.size());
         for (Bounds box : t) {
             if (box.intersects(bbox)) {
                 toFetch.add(box);
@@ -47,7 +47,7 @@ public abstract class DownloadStrategy {
         download(toFetch, klass);
     }
 
-    private void printDebug(Bounds bbox, Collection<Bounds> toFetch) {
+    private static void printDebug(Bounds bbox, Collection<Bounds> toFetch) {
         double areaToDownload = 0;
         for (Bounds box : toFetch) {
             areaToDownload += box.getArea();
@@ -62,11 +62,11 @@ public abstract class DownloadStrategy {
         double downloadP = (areaToDownload * 100) / (bbox.getArea());
         double downloadedP = (areaDownloaded * 100) / (bbox.getArea());
 
-        System.out.printf("Getting %.1f%% of area, already have %.1f%%, overlap %.1f%%%n", downloadP, downloadedP,
-                downloadP + downloadedP - 100);
+        Main.info(String.format("Getting %.1f%% of area, already have %.1f%%, overlap %.1f%%%n", downloadP, downloadedP,
+                downloadP + downloadedP - 100));
     }
 
-    private Bounds intersection(Bounds box1, Bounds box2) {
+    private static Bounds intersection(Bounds box1, Bounds box2) {
         double minX1 = box1.getMin().getX();
         double maxX1 = box1.getMax().getX();
         double minY1 = box1.getMin().getY();
@@ -85,7 +85,7 @@ public abstract class DownloadStrategy {
         return new Bounds(minY, minX, maxY, maxX);
     }
 
-    private Collection<Bounds> getExisting(Class<?> klass) {
+    private static Collection<Bounds> getExisting(Class<?> klass) {
         if (klass.isAssignableFrom(OsmDataLayer.class)) {
             OsmDataLayer layer = Main.map.mapView.getEditLayer();
             if (layer == null) {
@@ -117,7 +117,7 @@ public abstract class DownloadStrategy {
 
     public abstract Collection<Bounds> getBoxes(Bounds bbox, Collection<Bounds> present, int maxAreas);
 
-    private void download(Collection<Bounds> bboxes, Class<?> klass) {
+    private static void download(Collection<Bounds> bboxes, Class<?> klass) {
         for (Bounds bbox : bboxes) {
             AbstractDownloadTask<?> task = getDownloadTask(klass);
             
@@ -131,7 +131,7 @@ public abstract class DownloadStrategy {
         }
     }
 
-    private AbstractDownloadTask<?> getDownloadTask(Class<?> klass) {
+    private static AbstractDownloadTask<?> getDownloadTask(Class<?> klass) {
         if (klass.isAssignableFrom(OsmDataLayer.class))
             return new DownloadOsmTask2();
         if (klass.isAssignableFrom(GpxLayer.class))
@@ -139,7 +139,7 @@ public abstract class DownloadStrategy {
         throw new IllegalArgumentException();
     }
 
-    static protected Bounds extend(Bounds bbox, double amount) {
+    protected static Bounds extend(Bounds bbox, double amount) {
         LatLon min = bbox.getMin();
         LatLon max = bbox.getMax();
 
@@ -148,5 +148,4 @@ public abstract class DownloadStrategy {
 
         return new Bounds(min.lat() - dLat, min.lon() - dLon, max.lat() + dLat, max.lon() + dLon);
     }
-
 }

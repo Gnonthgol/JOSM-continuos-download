@@ -10,7 +10,7 @@ import java.util.PriorityQueue;
 import org.openstreetmap.josm.data.Bounds;
 import org.openstreetmap.josm.data.coor.LatLon;
 
-public class BoxStrategy extends DownloadStrategy {
+public class BoxStrategy extends AbstractDownloadStrategy {
 
     @Override
     public Collection<Bounds> getBoxes(Bounds bbox, Collection<Bounds> present, int maxBoxes) {

@@ -36,7 +36,7 @@ public class DownloadPlugin extends Plugin implements ZoomChangeListener {
     public static ExecutorService worker; // The worker that runs all our
                                           // downloads, it have more threads
                                           // than Main.worker
-    private static HashMap<String, DownloadStrategy> strats;
+    private static HashMap<String, AbstractDownloadStrategy> strats;
     private Timer timer;
     private TimerTask task;
     private Bounds lastBbox;
@@ -94,8 +94,8 @@ public class DownloadPlugin extends Plugin implements ZoomChangeListener {
         }
     }
 
-    public DownloadStrategy getStrat() {
-        DownloadStrategy r = strats.get(Main.pref.get("plugin.continuos_download.strategy", "BoxStrategy"));
+    public AbstractDownloadStrategy getStrat() {
+        AbstractDownloadStrategy r = strats.get(Main.pref.get("plugin.continuos_download.strategy", "BoxStrategy"));
 
         if (r == null) {
             r = strats.get("SimpleStrategy");
@@ -104,7 +104,7 @@ public class DownloadPlugin extends Plugin implements ZoomChangeListener {
         return r;
     }
 
-    public void registerStrat(DownloadStrategy strat) {
+    public void registerStrat(AbstractDownloadStrategy strat) {
         strats.put(strat.getClass().getSimpleName(), strat);
     }
 
