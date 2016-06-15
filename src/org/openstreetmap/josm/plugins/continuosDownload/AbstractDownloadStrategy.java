@@ -26,10 +26,10 @@ public abstract class AbstractDownloadStrategy {
     }
 
     public void fetch(Bounds bbox, Class<?> klass) {
-        Bounds extendedBox = extend(bbox, Main.pref.getDouble("plugin.continuos_download.extra_download", 0.1));
         Collection<Bounds> existing = getExisting(klass);
         if (existing.isEmpty())
             return;
+        Bounds extendedBox = extend(bbox, Main.pref.getDouble("plugin.continuos_download.extra_download", 0.1));
         Collection<Bounds> toFetch = getBoxes(extendedBox, existing,
                 Main.pref.getInteger("plugin.continuos_download.max_areas", 4));
 
@@ -87,9 +87,9 @@ public abstract class AbstractDownloadStrategy {
 
     private static Collection<Bounds> getExisting(Class<?> klass) {
         if (klass.isAssignableFrom(OsmDataLayer.class)) {
-            OsmDataLayer layer = Main.map.mapView.getEditLayer();
+            OsmDataLayer layer = Main.map.mapView.getLayerManager().getEditLayer();
             if (layer == null) {
-                Collection<Layer> layers = Main.map.mapView.getAllLayersAsList();
+                Collection<Layer> layers = Main.map.mapView.getLayerManager().getLayers();
                 for (Layer layer1 : layers) {
                     if (layer1 instanceof OsmDataLayer)
                         return ((OsmDataLayer) layer1).data.getDataSourceBounds();
@@ -102,10 +102,10 @@ public abstract class AbstractDownloadStrategy {
             if (!Main.isDisplayingMapView())
                 return null;
             boolean merge = Main.pref.getBoolean("download.gps.mergeWithLocal", false);
-            Layer active = Main.map.mapView.getActiveLayer();
+            Layer active = Main.map.mapView.getLayerManager().getActiveLayer();
             if (active instanceof GpxLayer && (merge || ((GpxLayer) active).data.fromServer))
                 return ((GpxLayer) active).data.getDataSourceBounds();
-            for (GpxLayer l : Main.map.mapView.getLayersOfType(GpxLayer.class)) {
+            for (GpxLayer l : Main.map.mapView.getLayerManager().getLayersOfType(GpxLayer.class)) {
                 if (merge || l.data.fromServer)
                     return l.data.getDataSourceBounds();
             }
