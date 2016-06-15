@@ -33,9 +33,10 @@ import org.openstreetmap.josm.tools.Shortcut;
 
 public class DownloadPlugin extends Plugin implements ZoomChangeListener {
 
-    public static ExecutorService worker; // The worker that runs all our
-                                          // downloads, it have more threads
-                                          // than Main.worker
+    /**
+     * The worker that runs all our downloads, it have more threads than {@link Main#worker}.
+     */
+    public static ExecutorService worker; 
     private static HashMap<String, AbstractDownloadStrategy> strats;
     private Timer timer;
     private TimerTask task;

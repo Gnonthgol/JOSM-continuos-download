@@ -17,6 +17,9 @@ import org.openstreetmap.josm.gui.preferences.DefaultTabPreferenceSetting;
 import org.openstreetmap.josm.gui.preferences.PreferenceTabbedPane;
 import org.openstreetmap.josm.tools.GBC;
 
+/**
+ * Plugin preferences.
+ */
 public class DownloadPreference extends DefaultTabPreferenceSetting {
 
     private final JCheckBox activeDefault = new JCheckBox(tr("Activate continuous downloads at startup."));

@@ -13,7 +13,7 @@ public class BoxStrategyTest {
 
     @Test
     public void test() {
-        ArrayList<Box> set = new ArrayList<Box>();
+        ArrayList<Box> set = new ArrayList<>();
         set.add(new Box(0, 0, 1, 1));
         set.add(new Box(1, 1, 2, 2));
 
@@ -27,7 +27,7 @@ public class BoxStrategyTest {
 
     @Test
     public void test2() {
-        Collection<Bounds> existing = new ArrayList<Bounds>();
+        Collection<Bounds> existing = new ArrayList<>();
         existing.add(new Bounds(0, 0, 1, 1));
 
         BoxStrategy strat = new BoxStrategy();
@@ -46,7 +46,7 @@ public class BoxStrategyTest {
          * This should be the worst case scenario. 25 boxes of 2x2 and a smaller
          * box some distance away.
          */
-        ArrayList<Box> set = new ArrayList<Box>();
+        ArrayList<Box> set = new ArrayList<>();
         for (int i = 0; i < 5; i++)
             for (int j = 0; j < 5; j++)
                 set.add(new Box(i * 3, j * 3, i * 3 + 2, j * 3 + 2));
