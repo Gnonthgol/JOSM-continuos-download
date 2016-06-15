@@ -132,7 +132,7 @@ public class DownloadPlugin extends Plugin implements ZoomChangeListener {
         private transient Collection<ButtonModel> buttonModels;
 
         public ToggleAction() {
-            super(tr("Download OSM data continuously"), "images/continuous-download",
+            super(tr("Download OSM data continuously"), "continuous-download",
                     tr("Download map data continuously when paning and zooming."), Shortcut.registerShortcut(
                             "continuosdownload:activate", tr("Toggle the continuous download on/off"), KeyEvent.VK_D,
                             Shortcut.ALT_SHIFT), true, "continuosdownload/activate", true);
