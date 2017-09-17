@@ -30,6 +30,7 @@ import org.openstreetmap.josm.gui.NavigatableComponent.ZoomChangeListener;
 import org.openstreetmap.josm.gui.preferences.PreferenceSetting;
 import org.openstreetmap.josm.plugins.Plugin;
 import org.openstreetmap.josm.plugins.PluginInformation;
+import org.openstreetmap.josm.tools.Logging;
 import org.openstreetmap.josm.tools.Shortcut;
 
 public class DownloadPlugin extends Plugin implements ZoomChangeListener {
@@ -37,8 +38,14 @@ public class DownloadPlugin extends Plugin implements ZoomChangeListener {
     /**
      * The worker that runs all our downloads, it have more threads than {@link Main#worker}.
      */
-    public static ExecutorService worker; 
-    private static HashMap<String, AbstractDownloadStrategy> strats;
+    public static final ExecutorService worker = new ThreadPoolExecutor(1,
+            Main.pref.getInteger("plugin.continuos_download.max_threads", 2), 1, TimeUnit.SECONDS,
+            new LinkedBlockingQueue<Runnable>());
+    private static final HashMap<String, AbstractDownloadStrategy> strats = new HashMap<>();
+    static {
+        registerStrat(new SimpleStrategy());
+        registerStrat(new BoxStrategy());
+    }
     private Timer timer;
     private TimerTask task;
     private Bounds lastBbox;
@@ -50,16 +57,8 @@ public class DownloadPlugin extends Plugin implements ZoomChangeListener {
      */
     public DownloadPlugin(PluginInformation info) {
         super(info);
-
-        // Create a new executor to run our downloads in
-        int maxThreads = Main.pref.getInteger("plugin.continuos_download.max_threads", 2);
-        worker = new ThreadPoolExecutor(1, maxThreads, 1, TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>());
-        
         active = Main.pref.getBoolean("plugin.continuos_download.active_default", true);
 
-        strats = new HashMap<>();
-        registerStrat(new SimpleStrategy());
-        registerStrat(new BoxStrategy());
         timer = new Timer();
         NavigatableComponent.addZoomChangeListener(this);
 
@@ -88,10 +87,17 @@ public class DownloadPlugin extends Plugin implements ZoomChangeListener {
                 task.cancel();
             }
 
-            // wait 500ms before downloading in case the user is in the middle
-            // of a pan/zoom
+            // wait 500ms before downloading in case the user is in the middle of a pan/zoom
+            int delay = Main.pref.getInteger("plugin.continuos_download.wait_time", 500);
             task = new Task(bbox);
-            timer.schedule(task, Main.pref.getInteger("plugin.continuos_download.wait_time", 500));
+            try {
+                timer.schedule(task, delay);
+            } catch (IllegalStateException e) {
+                // #8836: "Timer already cancelled" error received even if we don't cancel it
+                Logging.debug(e);
+                timer = new Timer();
+                timer.schedule(task, delay);
+            }
             lastBbox = bbox;
         }
     }
@@ -106,7 +112,7 @@ public class DownloadPlugin extends Plugin implements ZoomChangeListener {
         return r;
     }
 
-    public void registerStrat(AbstractDownloadStrategy strat) {
+    public static void registerStrat(AbstractDownloadStrategy strat) {
         strats.put(strat.getClass().getSimpleName(), strat);
     }
 
