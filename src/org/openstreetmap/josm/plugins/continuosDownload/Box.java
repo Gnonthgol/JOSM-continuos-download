@@ -7,6 +7,7 @@ package org.openstreetmap.josm.plugins.continuosDownload;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Objects;
 
 /**
  * A two-dimensional half-closed interval, or bounding box.
@@ -142,10 +143,6 @@ public class Box {
         return r;
     }
 
-    public boolean equals(Box other) {
-        return x.equals(other.x) && y.equals(other.y);
-    }
-
     /**
      * returns the area of the box
      */
@@ -155,7 +152,12 @@ public class Box {
 
     @Override
     public String toString() {
-        return "Box[" + x.min + "," + y.min + "," + x.max + "," + y.max + "]";
+        return "Box[" + x.min + "," + y.min + "," + x.max + "," + y.max + ']';
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(x, y);
     }
 
     @Override
@@ -165,16 +167,6 @@ public class Box {
         if (obj == null || getClass() != obj.getClass())
             return false;
         Box other = (Box) obj;
-        if (x == null) {
-            if (other.x != null)
-                return false;
-        } else if (!x.equals(other.x))
-            return false;
-        if (y == null) {
-            if (other.y != null)
-                return false;
-        } else if (!y.equals(other.y))
-            return false;
-        return true;
+        return Objects.equals(x, other.x) && Objects.equals(y, other.y);
     }
 }

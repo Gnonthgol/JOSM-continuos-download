@@ -22,6 +22,7 @@ import javax.swing.JCheckBoxMenuItem;
 import org.openstreetmap.josm.Main;
 import org.openstreetmap.josm.actions.JosmAction;
 import org.openstreetmap.josm.data.Bounds;
+import org.openstreetmap.josm.gui.MainApplication;
 import org.openstreetmap.josm.gui.MainMenu;
 import org.openstreetmap.josm.gui.MapView;
 import org.openstreetmap.josm.gui.NavigatableComponent;
@@ -63,7 +64,7 @@ public class DownloadPlugin extends Plugin implements ZoomChangeListener {
         NavigatableComponent.addZoomChangeListener(this);
 
         ToggleAction toggle = new ToggleAction();
-        JCheckBoxMenuItem menuItem = MainMenu.addWithCheckbox(Main.main.menu.fileMenu, toggle,
+        JCheckBoxMenuItem menuItem = MainMenu.addWithCheckbox(MainApplication.getMenu().fileMenu, toggle,
                 MainMenu.WINDOW_MENU_GROUP.ALWAYS);
         menuItem.setState(active);
         toggle.addButtonModel(menuItem.getModel());
@@ -76,9 +77,9 @@ public class DownloadPlugin extends Plugin implements ZoomChangeListener {
 
     @Override
     public void zoomChanged() {
-        if (Main.map == null)
+        if (MainApplication.getMap() == null)
             return;
-        MapView mv = Main.map.mapView;
+        MapView mv = MainApplication.getMap().mapView;
         Bounds bbox = mv.getLatLonBounds(mv.getBounds());
 
         // Have the user changed view since last time
