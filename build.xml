@@ -24,6 +24,7 @@
             <attribute name="7636_Plugin-Url" value="https://github.com/Gnonthgol/JOSM-continuos-download/releases/download/v1.1.02/continuosDownload.jar" />
             <attribute name="8942_Plugin-Url" value="https://github.com/JOSM/JOSM-continuos-download/releases/download/v1.2.2/continuosDownload.jar" />
             <attribute name="10282_Plugin-Url" value="https://github.com/JOSM/JOSM-continuos-download/releases/download/v1.2.3/continuosDownload.jar" />
+            <attribute name="10580_Plugin-Url" value="https://github.com/JOSM/JOSM-continuos-download/releases/download/v1.2.4/continuosDownload.jar" />
         </manifest>
     </target>
 
