@@ -39,7 +39,7 @@ public class DownloadPlugin extends Plugin implements ZoomChangeListener {
      * The worker that runs all our downloads, it have more threads than {@link Main#worker}.
      */
     public static final ExecutorService worker = new ThreadPoolExecutor(1,
-            Main.pref.getInteger("plugin.continuos_download.max_threads", 2), 1, TimeUnit.SECONDS,
+            Main.pref.getInt("plugin.continuos_download.max_threads", 2), 1, TimeUnit.SECONDS,
             new LinkedBlockingQueue<Runnable>());
     private static final HashMap<String, AbstractDownloadStrategy> strats = new HashMap<>();
     static {
@@ -88,7 +88,7 @@ public class DownloadPlugin extends Plugin implements ZoomChangeListener {
             }
 
             // wait 500ms before downloading in case the user is in the middle of a pan/zoom
-            int delay = Main.pref.getInteger("plugin.continuos_download.wait_time", 500);
+            int delay = Main.pref.getInt("plugin.continuos_download.wait_time", 500);
             task = new Task(bbox);
             try {
                 timer.schedule(task, delay);
