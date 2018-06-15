@@ -36,7 +36,8 @@ import org.openstreetmap.josm.tools.Shortcut;
 public class DownloadPlugin extends Plugin implements ZoomChangeListener {
 
     /**
-     * The worker that runs all our downloads, it have more threads than {@link Main#worker}.
+     * The worker that runs all our downloads, it have more threads than
+     * {@link MainApplication#worker}.
      */
     public static final ExecutorService worker = new ThreadPoolExecutor(1,
             Main.pref.getInt("plugin.continuos_download.max_threads", 2), 1, TimeUnit.SECONDS,

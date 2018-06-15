@@ -4,6 +4,7 @@ package org.openstreetmap.josm.plugins.continuosDownload;
 import java.util.concurrent.Future;
 
 import org.openstreetmap.josm.actions.downloadtasks.DownloadOsmTask;
+import org.openstreetmap.josm.actions.downloadtasks.DownloadParams;
 import org.openstreetmap.josm.data.Bounds;
 import org.openstreetmap.josm.gui.progress.ProgressMonitor;
 import org.openstreetmap.josm.io.OsmServerReader;
@@ -22,16 +23,16 @@ public class DownloadOsmTask2 extends DownloadOsmTask {
     }
 
     @Override
-    public Future<?> download(OsmServerReader reader, boolean newLayer, Bounds downloadArea,
+    public Future<?> download(OsmServerReader reader, DownloadParams settings, Bounds downloadArea,
             ProgressMonitor progressMonitor) {
-        return download(new DownloadTask2(newLayer, reader, progressMonitor), downloadArea);
+        return download(new DownloadTask2(settings, reader, progressMonitor), downloadArea);
     }
 
     protected class DownloadTask2 extends DownloadTask {
 
-        public DownloadTask2(boolean newLayer, OsmServerReader reader,
+        public DownloadTask2(DownloadParams settings, OsmServerReader reader,
                 ProgressMonitor progressMonitor) {
-            super(newLayer, reader, progressMonitor, false);
+            super(settings, reader, progressMonitor, false);
         }
     }
 }

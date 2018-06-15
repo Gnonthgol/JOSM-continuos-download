@@ -9,6 +9,7 @@ import java.util.concurrent.Future;
 import org.openstreetmap.josm.Main;
 import org.openstreetmap.josm.actions.downloadtasks.AbstractDownloadTask;
 import org.openstreetmap.josm.actions.downloadtasks.DownloadGpsTask;
+import org.openstreetmap.josm.actions.downloadtasks.DownloadParams;
 import org.openstreetmap.josm.actions.downloadtasks.PostDownloadHandler;
 import org.openstreetmap.josm.data.Bounds;
 import org.openstreetmap.josm.data.coor.LatLon;
@@ -129,7 +130,7 @@ public abstract class AbstractDownloadStrategy {
                 monitor = NullProgressMonitor.INSTANCE;
             }
 
-            Future<?> future = task.download(false, bbox, monitor);
+            Future<?> future = task.download(new DownloadParams(), bbox, monitor);
             DownloadPlugin.worker.execute(new PostDownloadHandler(task, future));
         }
     }
