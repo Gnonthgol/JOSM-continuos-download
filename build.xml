@@ -20,13 +20,13 @@
 	
     <target name="additional-manifest">
         <manifest file="MANIFEST" mode="update">
-            <attribute name="7588_Plugin-Url" value="https://github.com/Gnonthgol/JOSM-continuos-download/releases/download/v1.1.01/continuosDownload.jar" />
-            <attribute name="7636_Plugin-Url" value="https://github.com/Gnonthgol/JOSM-continuos-download/releases/download/v1.1.02/continuosDownload.jar" />
-            <attribute name="8942_Plugin-Url" value="https://github.com/JOSM/JOSM-continuos-download/releases/download/v1.2.2/continuosDownload.jar" />
-            <attribute name="10282_Plugin-Url" value="https://github.com/JOSM/JOSM-continuos-download/releases/download/v1.2.3/continuosDownload.jar" />
-            <attribute name="10580_Plugin-Url" value="https://github.com/JOSM/JOSM-continuos-download/releases/download/v1.2.4/continuosDownload.jar" />
-            <attribute name="12643_Plugin-Url" value="https://github.com/JOSM/JOSM-continuos-download/releases/download/v1.2.5/continuosDownload.jar" />
-            <attribute name="12840_Plugin-Url" value="https://github.com/JOSM/JOSM-continuos-download/releases/download/v1.2.6/continuosDownload.jar" />
+            <attribute name="7588_Plugin-Url" value="v1.1.01;https://github.com/Gnonthgol/JOSM-continuos-download/releases/download/v1.1.01/continuosDownload.jar" />
+            <attribute name="7636_Plugin-Url" value="v1.1.02;https://github.com/Gnonthgol/JOSM-continuos-download/releases/download/v1.1.02/continuosDownload.jar" />
+            <attribute name="8942_Plugin-Url" value="v1.2.2;https://github.com/JOSM/JOSM-continuos-download/releases/download/v1.2.2/continuosDownload.jar" />
+            <attribute name="10282_Plugin-Url" value="v1.2.3;https://github.com/JOSM/JOSM-continuos-download/releases/download/v1.2.3/continuosDownload.jar" />
+            <attribute name="10580_Plugin-Url" value="v1.2.4;https://github.com/JOSM/JOSM-continuos-download/releases/download/v1.2.4/continuosDownload.jar" />
+            <attribute name="12643_Plugin-Url" value="v1.2.5;https://github.com/JOSM/JOSM-continuos-download/releases/download/v1.2.5/continuosDownload.jar" />
+            <attribute name="12840_Plugin-Url" value="v1.2.6;https://github.com/JOSM/JOSM-continuos-download/releases/download/v1.2.6/continuosDownload.jar" />
         </manifest>
     </target>
 
