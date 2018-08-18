@@ -6,7 +6,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.concurrent.Future;
 
-import org.openstreetmap.josm.Main;
 import org.openstreetmap.josm.actions.downloadtasks.AbstractDownloadTask;
 import org.openstreetmap.josm.actions.downloadtasks.DownloadGpsTask;
 import org.openstreetmap.josm.actions.downloadtasks.DownloadParams;
@@ -19,6 +18,7 @@ import org.openstreetmap.josm.gui.layer.Layer;
 import org.openstreetmap.josm.gui.layer.OsmDataLayer;
 import org.openstreetmap.josm.gui.progress.NullProgressMonitor;
 import org.openstreetmap.josm.gui.progress.ProgressMonitor;
+import org.openstreetmap.josm.spi.preferences.Config;
 import org.openstreetmap.josm.tools.Logging;
 
 public abstract class AbstractDownloadStrategy {
@@ -32,9 +32,9 @@ public abstract class AbstractDownloadStrategy {
         Collection<Bounds> existing = getExisting(klass);
         if (existing.isEmpty())
             return;
-        Bounds extendedBox = extend(bbox, Main.pref.getDouble("plugin.continuos_download.extra_download", 0.1));
+        Bounds extendedBox = extend(bbox, Config.getPref().getDouble("plugin.continuos_download.extra_download", 0.1));
         Collection<Bounds> toFetch = getBoxes(extendedBox, existing,
-                Main.pref.getInt("plugin.continuos_download.max_areas", 4));
+                Config.getPref().getInt("plugin.continuos_download.max_areas", 4));
 
         printDebug(extendedBox, toFetch);
 
@@ -105,7 +105,7 @@ public abstract class AbstractDownloadStrategy {
         } else if (klass.isAssignableFrom(GpxLayer.class)) {
             if (!MainApplication.isDisplayingMapView())
                 return null;
-            boolean merge = Main.pref.getBoolean("download.gps.mergeWithLocal", false);
+            boolean merge = Config.getPref().getBoolean("download.gps.mergeWithLocal", false);
             Layer active = MainApplication.getMap().mapView.getLayerManager().getActiveLayer();
             if (active instanceof GpxLayer && (merge || ((GpxLayer) active).data.fromServer))
                 return ((GpxLayer) active).data.getDataSourceBounds();
@@ -126,7 +126,7 @@ public abstract class AbstractDownloadStrategy {
             AbstractDownloadTask<?> task = getDownloadTask(klass);
             
             ProgressMonitor monitor = null;
-            if (Main.pref.getBoolean("plugin.continuos_download.quiet_download", false)) {
+            if (Config.getPref().getBoolean("plugin.continuos_download.quiet_download", false)) {
                 monitor = NullProgressMonitor.INSTANCE;
             }
 

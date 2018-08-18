@@ -19,7 +19,6 @@ import java.util.concurrent.TimeUnit;
 import javax.swing.ButtonModel;
 import javax.swing.JCheckBoxMenuItem;
 
-import org.openstreetmap.josm.Main;
 import org.openstreetmap.josm.actions.JosmAction;
 import org.openstreetmap.josm.data.Bounds;
 import org.openstreetmap.josm.gui.MainApplication;
@@ -30,6 +29,7 @@ import org.openstreetmap.josm.gui.NavigatableComponent.ZoomChangeListener;
 import org.openstreetmap.josm.gui.preferences.PreferenceSetting;
 import org.openstreetmap.josm.plugins.Plugin;
 import org.openstreetmap.josm.plugins.PluginInformation;
+import org.openstreetmap.josm.spi.preferences.Config;
 import org.openstreetmap.josm.tools.Logging;
 import org.openstreetmap.josm.tools.Shortcut;
 
@@ -40,7 +40,7 @@ public class DownloadPlugin extends Plugin implements ZoomChangeListener {
      * {@link MainApplication#worker}.
      */
     public static final ExecutorService worker = new ThreadPoolExecutor(1,
-            Main.pref.getInt("plugin.continuos_download.max_threads", 2), 1, TimeUnit.SECONDS,
+            Config.getPref().getInt("plugin.continuos_download.max_threads", 2), 1, TimeUnit.SECONDS,
             new LinkedBlockingQueue<Runnable>());
     private static final HashMap<String, AbstractDownloadStrategy> strats = new HashMap<>();
     static {
@@ -58,7 +58,7 @@ public class DownloadPlugin extends Plugin implements ZoomChangeListener {
      */
     public DownloadPlugin(PluginInformation info) {
         super(info);
-        active = Main.pref.getBoolean("plugin.continuos_download.active_default", true);
+        active = Config.getPref().getBoolean("plugin.continuos_download.active_default", true);
 
         timer = new Timer();
         NavigatableComponent.addZoomChangeListener(this);
@@ -89,7 +89,7 @@ public class DownloadPlugin extends Plugin implements ZoomChangeListener {
             }
 
             // wait 500ms before downloading in case the user is in the middle of a pan/zoom
-            int delay = Main.pref.getInt("plugin.continuos_download.wait_time", 500);
+            int delay = Config.getPref().getInt("plugin.continuos_download.wait_time", 500);
             task = new Task(bbox);
             try {
                 timer.schedule(task, delay);
@@ -104,7 +104,7 @@ public class DownloadPlugin extends Plugin implements ZoomChangeListener {
     }
 
     public AbstractDownloadStrategy getStrat() {
-        AbstractDownloadStrategy r = strats.get(Main.pref.get("plugin.continuos_download.strategy", "BoxStrategy"));
+        AbstractDownloadStrategy r = strats.get(Config.getPref().get("plugin.continuos_download.strategy", "BoxStrategy"));
 
         if (r == null) {
             r = strats.get("SimpleStrategy");
@@ -130,7 +130,7 @@ public class DownloadPlugin extends Plugin implements ZoomChangeListener {
                 return;
             
             // Do not try to download an area if the user have zoomed far out
-            if (bbox.getArea() < Main.pref.getDouble("plugin.continuos_download.max_area", 0.25))
+            if (bbox.getArea() < Config.getPref().getDouble("plugin.continuos_download.max_area", 0.25))
                 getStrat().fetch(bbox);
         }
     }
