@@ -1,32 +1,40 @@
 // License: GPL. See LICENSE file for details.
 package org.openstreetmap.josm.plugins.continuosDownload;
 
-/*
- * Original code written by zere
- */
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Objects;
 
 /**
  * A two-dimensional half-closed interval, or bounding box.
+ * 
+ * @author zere, gnonthgol
  */
 public class Box {
 
+    /** X interval */
     public Interval x;
+    /** Y interval */
     public Interval y;
 
-    /*
-     * args are either (minx, miny, maxx, maxy) or two intervals (x, y).
+    /**
+     * Constructs a new {@code Box} using (minx, miny, maxx, maxy).
+     * 
+     * @param minx min X
+     * @param miny min Y
+     * @param maxx max X
+     * @param maxy max Y
      */
     public Box(long minx, long miny, long maxx, long maxy) {
         x = new Interval(minx, maxx);
         y = new Interval(miny, maxy);
     }
 
-    /*
-     * args are either (minx, miny, maxx, maxy) or two intervals (x, y).
+    /**
+     * Constructs a new {@code Box} using two intervals (x, y).
+     * 
+     * @param x X interval
+     * @param y Y interval
      */
     public Box(Interval x, Interval y) {
         this.x = x;
@@ -35,6 +43,8 @@ public class Box {
 
     /**
      * if this box has any area, whether it contains a valid amount of space.
+     * 
+     * @return {@code true} if it contains a valid amount of space
      */
     public boolean valid() {
         return x.valid() && y.valid();
@@ -42,6 +52,9 @@ public class Box {
 
     /**
      * whether this box intersects another.
+     * 
+     * @param other other box
+     * @return {@code true} if this box intersects another
      */
     public boolean intersects(Box other) {
         return x.intersects(other.x) && y.intersects(other.y);
@@ -49,6 +62,9 @@ public class Box {
 
     /**
      * intersection. may return a box that isn't valid.
+     * 
+     * @param other other box
+     * @return intersection
      */
     public Box intersection(Box other) {
         return new Box(x.intersection(other.x), y.intersection(other.y));
@@ -56,6 +72,9 @@ public class Box {
 
     /**
      * union. return a Box covering this Box and the other
+     * 
+     * @param other other box
+     * @return union
      */
     public Box union(Box other) {
         return new Box(x.union(other.x), y.union(other.y));
@@ -63,6 +82,8 @@ public class Box {
 
     /**
      * inverse. returns an array of 8 Boxes covering all space except for this box.
+     * 
+     * @return array of 8 Boxes covering all space except for this box
      */
     public Collection<Box> inverse() {
         long inf = Long.MAX_VALUE;
@@ -81,6 +102,9 @@ public class Box {
     /**
      * subtraction. take the inverse of one bbox and intersect it with this one.
      * returns an array of Boxes.
+     * 
+     * @param other other box
+     * @return array of Boxes
      */
     public Collection<Box> substract(Box other) {
         Collection<Box> r = new ArrayList<>();
@@ -95,6 +119,9 @@ public class Box {
 
     /**
      * subtract all Boxes in given array. resulting set of boxes will be disjoint.
+     * 
+     * @param others other Boxes
+     * @return set of boxes
      */
     public Collection<Box> subtract_all(Collection<Box> others) {
         Collection<Box> memo = new ArrayList<>();
@@ -111,7 +138,11 @@ public class Box {
     }
 
     /**
-     * merge as many boxes as possible without increasing the total area of the set of boxes.
+     * merge as many boxes as possible without increasing the total area of the set
+     * of boxes.
+     * 
+     * @param boxes boxes
+     * @return boxes
      */
     public static Collection<Box> merge(Collection<Box> boxes) {
         /*
@@ -145,6 +176,8 @@ public class Box {
 
     /**
      * returns the area of the box
+     * 
+     * @return the area of the box
      */
     public long size() {
         return x.size() * y.size();
@@ -164,7 +197,7 @@ public class Box {
     public boolean equals(Object obj) {
         if (this == obj)
             return true;
-        if (obj == null || getClass() != obj.getClass())
+        if (!(obj instanceof Box))
             return false;
         Box other = (Box) obj;
         return Objects.equals(x, other.x) && Objects.equals(y, other.y);

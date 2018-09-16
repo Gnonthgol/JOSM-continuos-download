@@ -62,8 +62,8 @@ public abstract class AbstractDownloadStrategy {
                 areaDownloaded += intersection(box, bbox).getArea();
         }
 
-        double downloadP = (areaToDownload * 100) / (bbox.getArea());
-        double downloadedP = (areaDownloaded * 100) / (bbox.getArea());
+        double downloadP = (areaToDownload * 100) / bbox.getArea();
+        double downloadedP = (areaDownloaded * 100) / bbox.getArea();
 
         Logging.info(String.format("Getting %.1f%% of area, already have %.1f%%, overlap %.1f%%%n", downloadP,
                 downloadedP,

@@ -49,7 +49,7 @@ public class Interval {
     public boolean equals(Object obj) {
         if (this == obj)
             return true;
-        if (obj == null || getClass() != obj.getClass())
+        if (!(obj instanceof Interval))
             return false;
         Interval other = (Interval) obj;
         if (max != other.max)
