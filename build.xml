@@ -1,45 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-** This is a template build file for a JOSM  plugin.
-**
-** Maintaining versions
-** ====================
-** See README.template
-**
-** Usage
-** =====
-** Call "ant help" to get possible build targets.
-**
--->
 <project name="continuosDownload" default="dist" basedir=".">
 
     <!-- enter the SVN commit message -->
     <property name="commit.message" value="Commit message"/>
     <!-- enter the *lowest* JOSM version this plugin is currently compatible with -->
-    <property name="plugin.main.version" value="7636"/>
+    <property name="plugin.main.version" value="14153"/>
 
     <!-- Configure these properties (replace "..." accordingly).
-
-
-
-         See http://josm.openstreetmap.de/wiki/DevelopersGuide/DevelopingPlugins
+         See https://josm.openstreetmap.de/wiki/DevelopersGuide/DevelopingPlugins
     -->
-    <property name="plugin.author" value="Gnonthgol"/>
+    <property name="plugin.author" value="Gnonthgol; JOSM developers"/>
     <property name="plugin.class" value="org.openstreetmap.josm.plugins.continuosDownload.DownloadPlugin"/>
     <property name="plugin.description" value="Downloads new data when you pan/zoom"/>
-    <property name="plugin.icon" value="images/continous-download.png"/>
-    <!-- <property name="plugin.link" value="..."/>-->
-    <!--<property name="plugin.early" value="..."/>-->
-    <!--<property name="plugin.requires" value="..."/>-->
-    <!--<property name="plugin.stage" value="..."/>-->
+    <property name="plugin.icon" value="images/continuous-download.png"/>
+    <property name="plugin.link" value="https://github.com/JOSM/JOSM-continuos-download"/>
     
 	<property name="josm" location="../../core/dist/josm-custom.jar"/>
 	<property name="plugin.dist.dir" value="../../dist"/>
 	
     <target name="additional-manifest">
         <manifest file="MANIFEST" mode="update">
-            <attribute name="7588_Plugin-Url" value="https://github.com/Gnonthgol/JOSM-continuos-download/releases/download/v1.1.01/continuosDownload.jar" />
-            <attribute name="7636_Plugin-Url" value="https://github.com/Gnonthgol/JOSM-continuos-download/releases/download/v1.1.02/continuosDownload.jar" />
+            <attribute name="7588_Plugin-Url" value="v1.1.01;https://github.com/Gnonthgol/JOSM-continuos-download/releases/download/v1.1.01/continuosDownload.jar" />
+            <attribute name="7636_Plugin-Url" value="v1.1.02;https://github.com/Gnonthgol/JOSM-continuos-download/releases/download/v1.1.02/continuosDownload.jar" />
+            <attribute name="8942_Plugin-Url" value="v1.2.2;https://github.com/JOSM/JOSM-continuos-download/releases/download/v1.2.2/continuosDownload.jar" />
+            <attribute name="10282_Plugin-Url" value="v1.2.3;https://github.com/JOSM/JOSM-continuos-download/releases/download/v1.2.3/continuosDownload.jar" />
+            <attribute name="10580_Plugin-Url" value="v1.2.4;https://github.com/JOSM/JOSM-continuos-download/releases/download/v1.2.4/continuosDownload.jar" />
+            <attribute name="12643_Plugin-Url" value="v1.2.5;https://github.com/JOSM/JOSM-continuos-download/releases/download/v1.2.5/continuosDownload.jar" />
+            <attribute name="12840_Plugin-Url" value="v1.2.6;https://github.com/JOSM/JOSM-continuos-download/releases/download/v1.2.6/continuosDownload.jar" />
+            <attribute name="13927_Plugin-Url" value="v1.2.8;https://github.com/JOSM/JOSM-continuos-download/releases/download/v1.2.8/continuosDownload.jar" />
         </manifest>
     </target>
 

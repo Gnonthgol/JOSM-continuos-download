@@ -1,3 +1,4 @@
+// License: GPL. See LICENSE file for details.
 package org.openstreetmap.josm.plugins.continuosDownload;
 
 import java.util.ArrayList;
@@ -9,7 +10,7 @@ import java.util.PriorityQueue;
 import org.openstreetmap.josm.data.Bounds;
 import org.openstreetmap.josm.data.coor.LatLon;
 
-public class BoxStrategy extends DownloadStrategy {
+public class BoxStrategy extends AbstractDownloadStrategy {
 
     @Override
     public Collection<Bounds> getBoxes(Bounds bbox, Collection<Bounds> present, int maxBoxes) {
@@ -19,7 +20,7 @@ public class BoxStrategy extends DownloadStrategy {
         return toBounds(Box.merge(toFetch));
     }
 
-    /*
+    /**
      * find the optimal partition - the one which requests the smallest amount
      * of extra space - given the set p of partitions
      */
@@ -29,7 +30,7 @@ public class BoxStrategy extends DownloadStrategy {
          * of memory. It did not happen during testing, but that is no guaranty
          * it will not happen.
          */
-        ArrayList<Box> list = new ArrayList<Box>(set);
+        ArrayList<Box> list = new ArrayList<>(set);
         // Sort the set from largest to smalest, there is a better chance of
         // getting good pactitions if you start with the biggest boxes because
         // the smaller boxes have little impact on the overall score.
@@ -41,7 +42,7 @@ public class BoxStrategy extends DownloadStrategy {
             }
         });
 
-        PriorityQueue<Partition> q = new PriorityQueue<Partition>();
+        PriorityQueue<Partition> q = new PriorityQueue<>();
         q.add(new Partition());
 
         // Find the best partition this far and add another box to it until the
@@ -73,15 +74,18 @@ public class BoxStrategy extends DownloadStrategy {
             box = n;
             size = i;
             enclosingArea = area;
-
         }
 
+        /**
+         * Constructs a new {@code Partition}.
+         */
         public Partition() {
             this(new ArrayList<Box>(), 0, 0);
         }
 
         // Create a new partition with an extra box in the ith place
         public Partition add(Box next, int i) {
+            @SuppressWarnings("unchecked")
             ArrayList<Box> n = (ArrayList<Box>) box.clone();
             if (n.size() <= i) {
                 n.add(next);
@@ -135,21 +139,21 @@ public class BoxStrategy extends DownloadStrategy {
      * Converting to fpi makes computation faster and more accurate.
      */
 
-    /*
+    /**
      * Converts a double to a fixed precision integer with 7 digits
      */
     private static long toFpi(double n) {
         return (long) (n * 10000000);
     }
 
-    /*
+    /**
      * Converts a fixed precision integer to a double
      */
     private static double fromFpi(long n) {
         return (n / 10000000.0);
     }
 
-    /*
+    /**
      * Converts from bounds used in josm to boxes used here
      */
     public static Box fromBounds(Bounds bbox) {
@@ -158,7 +162,7 @@ public class BoxStrategy extends DownloadStrategy {
                 toFpi(max.getY()));
     }
 
-    /*
+    /**
      * Converts from boxes to bounds
      */
     public static Bounds toBounds(Box bbox) {
@@ -166,22 +170,22 @@ public class BoxStrategy extends DownloadStrategy {
                 fromFpi(bbox.y.max), fromFpi(bbox.x.max));
     }
 
-    /*
+    /**
      * Converts a set of boxes from bounds used in josm to boxes used here
      */
     public static Collection<Box> fromBounds(Collection<Bounds> bbox) {
-        ArrayList<Box> r = new ArrayList<Box>(bbox.size());
+        ArrayList<Box> r = new ArrayList<>(bbox.size());
         for (Bounds box : bbox) {
             r.add(fromBounds(box));
         }
         return r;
     }
 
-    /*
+    /**
      * Converts a set of boxes from boxes to bounds
      */
     public static Collection<Bounds> toBounds(Collection<Box> bbox) {
-        ArrayList<Bounds> r = new ArrayList<Bounds>(bbox.size());
+        ArrayList<Bounds> r = new ArrayList<>(bbox.size());
         for (Box box : bbox) {
             r.add(toBounds(box));
         }

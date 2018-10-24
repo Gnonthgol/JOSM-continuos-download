@@ -1,5 +1,7 @@
+// License: GPL. See LICENSE file for details.
 package org.openstreetmap.josm.plugins.continuosDownload;
 
+import java.util.Objects;
 
 public class Interval {
     public long min, max;
@@ -39,12 +41,15 @@ public class Interval {
     }
 
     @Override
+    public int hashCode() {
+        return Objects.hash(min, max);
+    }
+
+    @Override
     public boolean equals(Object obj) {
         if (this == obj)
             return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
+        if (!(obj instanceof Interval))
             return false;
         Interval other = (Interval) obj;
         if (max != other.max)
@@ -53,5 +58,4 @@ public class Interval {
             return false;
         return true;
     }
-
 }
